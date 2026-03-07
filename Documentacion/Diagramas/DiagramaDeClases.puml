@@ -1,5 +1,6 @@
 @startuml GuardianEscolar
-class Alerta {
+'Clase a observar'
+class Alerta { 
     - titulo : String
     - tipoAlerta : String
     - fechaHora : LocalDate
@@ -24,6 +25,7 @@ class Bus {
     +avisarEstadoGPS (estadoGPS) : void
 
 }
+
 class Escuela {
     - nombre : String
     - direccion : String
@@ -60,6 +62,11 @@ class Abordaje {
     +agregarAbordaje (tipo, fechaHora, bus, usuario)
 }
 class Usuario {
+    - nombreUsuario : String
+    - contraseña : String
+    - persona : arrayList<Persona>
+}
+class Persona {
     - nombre : String
     - apellido : String
     - direccion : String
@@ -67,43 +74,73 @@ class Usuario {
     - email : String
     - tipoIdentificacion : Sting
     - identificacion : int
-
 }
 class Parada {
-
-
-}
-class Familia {
-
-
+    - nombre : String
+    - direccion : String
+    - horaLlegada : LocalDate
 }
 class Curso {
-
-
+    - nombre : String
+    - grado : String
+    -estudiantes : ArrayList<Estudiante>
 }
 class Conductor {
-
-
+    - licencia : String
+    - estadoLicencia : Boolean
+    - vigenciaLicencia : MediumBlob
+    
+    +actualizarEstadoLicencia (estadoLicencia) : void
+    +avisarVigenciaLicencia (vigenciaLicencia) : void
 }
+
+package Familias{
 class Padre {
-
-
+    
 }
 class Estudiante {
 
 
 }
-class Administrador {
+class Familia {
+    - nombre : String
+    - cantidadMiembros : int
+    - Observaciones : String
+    - estudiantes : ArrayList<Estudiante>
+    - padres : ArrayList<Padre>
+}
 
+}
+class Administrador {
 
 }
 interface PermisoUsuario {
-
-
+    +verRuta ( ) : void
+    +verAlertas ( ) : void
+    +verAbordajes ( ) : void
+    +verParadas ( ) : void
+    +seleccionarRuta ( ) : void
+    +actualizarInformacionPersonal ( ) : void
 }
 interface PermisoAdministrador {
-
-
+    +registrarUsuario ( ) : void
+    +eliminarUsuario ( ) : void
+    +actualizarInformacionUsuario ( ) : void
+    +asignarPermisos ( ) : void
+    +verAlertas ( ) : void
+    +crearRuta ( ) : void
+    +eliminarRuta ( ) : void
+    +actualizarRuta ( ) : void
+    +crearParada ( ) : void
+    +eliminarParada ( ) : void
+    +verAbordajes ( ) : void
+    +verParadas ( ) : void
+    +verRutas ( ) : void
+    +agregarBus ( ) : void
+    +eliminarBus ( ) : void
+    +actualizarInformacionPersonal ( ) : void
+    +actualizarInoformacionBus ( ) : void
+    +actualizarInformacionEscuela ( ) : void
 }
 
 
@@ -120,14 +157,21 @@ PermisoAdministrador <|... Administrador
 'Asociaciones'
 Alerta o--- Bus
 Usuario o--- Alerta
+
+Escuela o--- Usuario
+Persona o--- Usuario
+Curso o--- Estudiante
+
 Bus o--- Ruta
 Bus o--- Conductor
 Bus o--- Estudiante
-Escuela o--- Usuario
+
+
 Ruta *--- Parada
 Abordaje o--- Bus
+
 Familia o--- Padre
 Familia o--- Estudiante
-Curso o--- Estudiante
+
 
 @enduml
