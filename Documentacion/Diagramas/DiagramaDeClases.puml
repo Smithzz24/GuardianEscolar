@@ -1,0 +1,133 @@
+@startuml GuardianEscolar
+class Alerta {
+    - titulo : String
+    - tipoAlerta : String
+    - fechaHora : LocalDate
+    - bus : Bus
+    
+    +asignarBus (bus) : void
+    +crearAlerta (titulo, tipoAlerta, fechaHora, bus) : void
+    +enviarAlerta (titulo, tipoAlerta, fechaHora, bus) : void
+}
+class Bus {
+    - placa : String
+    - marca : String
+    - capacidadPasajeros : int
+    - vigenciaSOAT : MediumBlob
+    - estadoSOAT : Boolean
+    - estadoGPS : ENUM
+    
+    
+    +actualizarVigenciaSOAT (estadoSOAT) : void
+    +avisarVigenciaVencida (estadoSOAT) : void
+    +actualizarEstadoGPS (estadoGPS) : void
+    +avisarEstadoGPS (estadoGPS) : void
+
+}
+class Escuela {
+    - nombre : String
+    - direccion : String
+    - ciudad : String
+    - telefono : String
+    - email : String
+    - logo : TinyBlob
+    - tema : ENUM
+    
+}
+class Ruta {
+    - codigo : String
+    - sectorDestinado : String
+    - horaInicio : LocalDate
+    - horaFin : LocalDate
+    - paradas : ArrayList<Parada>
+    - pasajeros : ArrayList<Estudiente>
+    
+    +agregarPasajeros ( ) : void
+    +eliminarPasajeros ( ) : void
+    
+    +agregarParadas ( ) : void
+    +eliminarParadas ( ) : void
+    +actualizarHoraInicio (horaInicio) : void
+    +actualizarHoraFin (horaFin) : void
+
+}
+class Abordaje {
+    -tipo
+    -fechaHora : LocalDate
+    - bus : Bus
+    - usuario : usuario
+    
+    +agregarAbordaje (tipo, fechaHora, bus, usuario)
+}
+class Usuario {
+    - nombre : String
+    - apellido : String
+    - direccion : String
+    - telefono : int
+    - email : String
+    - tipoIdentificacion : Sting
+    - identificacion : int
+
+}
+class Parada {
+
+
+}
+class Familia {
+
+
+}
+class Curso {
+
+
+}
+class Conductor {
+
+
+}
+class Padre {
+
+
+}
+class Estudiante {
+
+
+}
+class Administrador {
+
+
+}
+interface PermisoUsuario {
+
+
+}
+interface PermisoAdministrador {
+
+
+}
+
+
+'Relaciones'
+Usuario <|--- PermisoUsuario
+Usuario <|--- PermisoAdministrador
+
+PermisoUsuario <|... Conductor
+PermisoUsuario <|... Padre
+PermisoUsuario <|... Estudiante
+PermisoAdministrador <|... Administrador
+
+
+'Asociaciones'
+Alerta o--- Bus
+Usuario o--- Alerta
+Bus o--- Ruta
+Bus o--- Conductor
+Bus o--- Estudiante
+Escuela o--- Usuario
+Ruta *--- Parada
+Abordaje o--- Bus
+Familia o--- Padre
+Familia o--- Estudiante
+Curso o--- Estudiante
+
+@enduml
