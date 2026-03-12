@@ -1,29 +1,53 @@
 @startuml GuardianEscolar
 'Clase a observar'
+
+interface AccionEstudiante {
+    +subir(estudiante : Estudiante);
+    +bajar(estudiante : Estudiante);
+}
+
+package IOvservable {
+    interface IObservable {
+        +agregarObservador(o : IObservador);
+        +eliminarObservador(o : IObservador);
+        +notificar();
+    }
+
+    class Bus {
+        - placa : String
+        - marca : String
+        - capacidadPasajeros : int
+        - vigenciaSOAT : MediumBlob
+        - estadoSOAT : Boolean
+        - estadoGPS : ENUM
+        
+        
+        +actualizarVigenciaSOAT (estadoSOAT) : void
+        +avisarVigenciaVencida (estadoSOAT) : void
+        +actualizarEstadoGPS (estadoGPS) : void
+        +avisarEstadoGPS (estadoGPS) : void
+
+        +agregarObservador(o : IObservador);
+        +eliminarObservador(o : IObservador);
+        +notificar();
+
+    }
+}
+
+package IObservador {
+    interface IObservador {
+
+    +recibirNotificacion(data : String);
+    }
+}
+
 class Alerta { 
     - titulo : String
     - tipoAlerta : String
     - fechaHora : LocalDate
     - bus : Bus
-    
-    +asignarBus (bus) : void
-    +crearAlerta (titulo, tipoAlerta, fechaHora, bus) : void
-    +enviarAlerta (titulo, tipoAlerta, fechaHora, bus) : void
-}
-class Bus {
-    - placa : String
-    - marca : String
-    - capacidadPasajeros : int
-    - vigenciaSOAT : MediumBlob
-    - estadoSOAT : Boolean
-    - estadoGPS : ENUM
-    
-    
-    +actualizarVigenciaSOAT (estadoSOAT) : void
-    +avisarVigenciaVencida (estadoSOAT) : void
-    +actualizarEstadoGPS (estadoGPS) : void
-    +avisarEstadoGPS (estadoGPS) : void
 
+    +crearAlerta (titulo, tipoAlerta, fechaHora, bus) : void
 }
 
 class Escuela {
@@ -96,11 +120,11 @@ class Conductor {
 
 package Familias{
 class Padre {
-    
+    +recibirNotificacion(data : String);
 }
 class Estudiante {
 
-
+    +escanearQR(bus : Bus);
 }
 class Familia {
     - nombre : String
@@ -153,6 +177,10 @@ PermisoUsuario <|... Padre
 PermisoUsuario <|... Estudiante
 PermisoAdministrador <|... Administrador
 
+' Implementaciones
+Bus ..|> IObservable
+Padre ..|> IObservador
+Bus ..|> AccionEstudiante
 
 'Asociaciones'
 Alerta o--- Bus
