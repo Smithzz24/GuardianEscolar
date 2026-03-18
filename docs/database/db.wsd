@@ -1,0 +1,226 @@
+@startuml
+!theme plain
+
+entity Families {
+  familyId: INTEGER <<PK>>
+  --
+  name: VARCHAR(255) <<NOT NULL>>
+  observations: TEXT <<NOT NULL>>
+}
+
+entity Profiles {
+  profileId: INTEGER <<PK>> <<AUTO_INCREMENT>>
+  --
+  name: VARCHAR(255) <<NOT NULL>>
+  lastName: VARCHAR(255) <<NOT NULL>>
+  identificationType: VARCHAR(255) <<NOT NULL>>
+  identificationNumber: INTEGER <<NOT NULL>>
+  email: VARCHAR(255) <<NOT NULL>>
+  phone: INTEGER <<NOT NULL>>
+  residenceAddress: VARCHAR(255) <<NOT NULL>>
+  password: VARCHAR(255) <<NOT NULL>>
+}
+
+entity Schools {
+  schoolId: INTEGER <<PK>> <<AUTO_INCREMENT>>
+  --
+  logo: TINYBLOB
+  name: VARCHAR(255) <<NOT NULL>>
+  address: VARCHAR(255) <<NOT NULL>>
+  cityId: INTEGER <<NOT NULL>>
+  phone: INTEGER <<NOT NULL>>
+  email: VARCHAR(255) <<NOT NULL>>
+  website: VARCHAR(255)
+  theme: VARCHAR(255)
+}
+
+entity Boardings {
+  profileId: INTEGER <<PK>>
+  busId: INTEGER <<PK>>
+  stopId: INTEGER <<NOT NULL>>
+  dateTime: TIMESTAMP <<NOT NULL>>
+  action: BOOLEAN <<NOT NULL>>
+}
+
+entity SavedAlerts {
+  profileId: INTEGER <<PK>>
+  alertId: INTEGER <<NOT NULL>>
+}
+
+entity FamilyMembers {
+  familyId: INTEGER <<PK>>
+  profileId: INTEGER <<PK>>
+}
+
+entity Buses {
+  busId: INTEGER <<PK>>
+  driverId: INTEGER <<NOT NULL>>
+  schoolId: INTEGER <<NOT NULL>>
+  brand: VARCHAR(255) <<NOT NULL>>
+  model: VARCHAR(255) <<NOT NULL>>
+  capacity: INTEGER <<NOT NULL>>
+  soatValidity: MEDIUMBLOB <<NOT NULL>>
+  gpsStatus: BOOLEAN <<NOT NULL>>
+}
+
+entity Stops {
+  stopId: INTEGER <<PK>> <<AUTO_INCREMENT>>
+  cityId: INTEGER <<NOT NULL>>
+  schoolId: INTEGER <<NOT NULL>>
+  address: VARCHAR(255) <<NOT NULL>>
+  longitude: DECIMAL <<NOT NULL>>
+  latitude: DECIMAL <<NOT NULL>>
+}
+
+entity Routes {
+  routeId: INTEGER <<PK>>
+  schoolId: INTEGER <<NOT NULL>>
+  name: VARCHAR(255) <<NOT NULL>>
+  targetSector: VARCHAR(255) <<NOT NULL>> <<UNIQUE>>
+  startTime: TIME <<NOT NULL>>
+  endTime: TIME <<NOT NULL>>
+}
+
+entity AlertTypes {
+  alertTypeId: INTEGER <<PK>> <<AUTO_INCREMENT>>
+  name: VARCHAR(255) <<NOT NULL>>
+  description: VARCHAR(255) <<NOT NULL>>
+  urgencyLevel: INTEGER <<NOT NULL>>
+}
+
+entity Alerts {
+  alertId: INTEGER <<PK>> <<AUTO_INCREMENT>>
+  alertTypeId: INTEGER <<NOT NULL>>
+  busId: INTEGER <<NOT NULL>>
+  dateTime: DATETIME <<NOT NULL>>
+}
+
+entity Cities {
+  cityId: INTEGER <<PK>> <<AUTO_INCREMENT>>
+  name: VARCHAR(255) <<NOT NULL>>
+  country: VARCHAR(255) <<NOT NULL>>
+}
+
+entity RouteStudentAssignments {
+  profileId: INTEGER <<PK>>
+  routeId: INTEGER <<PK>>
+}
+
+entity RouteStops {
+  routeId: INTEGER <<PK>>
+  stopId: INTEGER <<PK>>
+}
+
+entity RouteBusAssignments {
+  busId: INTEGER <<PK>>
+  routeId: INTEGER <<PK>>
+}
+
+entity SchoolCampuses {
+  campusId: INTEGER <<PK>> <<AUTO_INCREMENT>>
+  name: VARCHAR(255) <<NOT NULL>>
+  schoolId: INTEGER <<NOT NULL>>
+  address: VARCHAR(255) <<NOT NULL>>
+}
+
+entity Courses {
+  courseId: INTEGER <<PK>> <<AUTO_INCREMENT>>
+  name: VARCHAR(255) <<NOT NULL>>
+  campusId: INTEGER <<NOT NULL>>
+}
+
+entity CourseGroups {
+  profileId: INTEGER <<PK>>
+  courseId: INTEGER <<PK>>
+}
+
+entity DriverLicenses {
+  licenseId: INTEGER <<PK>>
+  profileId: INTEGER <<NOT NULL>>
+  licenseNumber: VARCHAR(255)
+  drivingLicense: MEDIUMBLOB <<NOT NULL>>
+  licenseExpirationDate: DATE <<NOT NULL>>
+}
+
+entity ProfileRoles {
+  profileId: INTEGER <<PK>>
+  roleId: INTEGER <<PK>>
+}
+
+entity Roles {
+  roleId: INTEGER <<PK>> <<AUTO_INCREMENT>>
+  name: VARCHAR(255) <<NOT NULL>>
+  description: VARCHAR(255) <<NOT NULL>>
+  permissions: VARCHAR(255) <<NOT NULL>>
+}
+
+entity ExceptionalDriverUsages {
+  usageId: INTEGER <<PK>> <<AUTO_INCREMENT>>
+  busId: INTEGER <<NOT NULL>>
+  profileId: INTEGER <<NOT NULL>>
+  startDateTime: DATETIME <<NOT NULL>>
+  endDateTime: DATETIME <<NOT NULL>>
+  reason: VARCHAR(255) <<NOT NULL>>
+}
+
+entity ExceptionalRouteUsages {
+  usageId: INTEGER <<PK>> <<AUTO_INCREMENT>>
+  profileId: INTEGER <<NOT NULL>>
+  routeId: INTEGER <<NOT NULL>>
+  dateTime: DATETIME <<NOT NULL>>
+  reason: VARCHAR(255)
+}
+
+' Relaciones
+
+SavedAlerts }o--|| Profiles : "profileId -> profileId"
+SavedAlerts }o--|| Alerts : "alertId -> alertId"
+
+Alerts }o--|| AlertTypes : "alertTypeId -> alertTypeId"
+Alerts }o--|| Buses : "busId -> busId"
+
+SchoolCampuses }o--|| Schools : "schoolId -> schoolId"
+
+Profiles ||--o{ FamilyMembers : "profileId -> profileId"
+Families ||--o{ FamilyMembers : "familyId -> familyId"
+
+Boardings }o--|| Profiles : "profileId -> profileId"
+Boardings }o--|| Buses : "busId -> busId"
+Boardings }o--|| Stops : "stopId -> stopId"
+
+Stops }o--|| Cities : "cityId -> cityId"
+Schools }o--|| Cities : "cityId -> cityId"
+
+RouteStudentAssignments }o--|| Routes : "routeId -> routeId"
+RouteStudentAssignments ||--|| Profiles : "profileId -> profileId"
+
+RouteStops }o--|| Routes : "routeId -> routeId"
+RouteStops }o--|| Stops : "stopId -> stopId"
+
+RouteBusAssignments }o--|| Buses : "busId -> busId"
+RouteBusAssignments }o--|| Routes : "routeId -> routeId"
+
+Buses }o--|| Schools : "schoolId -> schoolId"
+Buses }o--|| Profiles : "driverId -> profileId"
+
+Stops }o--|| Schools : "schoolId -> schoolId"
+
+Routes }o--|| Schools : "schoolId -> schoolId"
+
+Courses }o--|| SchoolCampuses : "campusId -> campusId"
+
+CourseGroups }o--|| Profiles : "profileId -> profileId"
+CourseGroups }o--|| Courses : "courseId -> courseId"
+
+DriverLicenses ||--|| Profiles : "profileId -> profileId"
+
+ProfileRoles }o--|| Profiles : "profileId -> profileId"
+ProfileRoles }o--|| Roles : "roleId -> roleId"
+
+ExceptionalDriverUsages }o--|| Buses : "busId -> busId"
+ExceptionalDriverUsages }o--|| Profiles : "profileId -> profileId"
+
+ExceptionalRouteUsages }o--|| Profiles : "profileId -> profileId"
+ExceptionalRouteUsages }o--|| Routes : "routeId -> routeId"
+
+@enduml
