@@ -23,11 +23,11 @@ entity Profiles {
 
 entity Schools {
   schoolId: INTEGER <<PK>> <<AUTO_INCREMENT>>
+  cityId: INTEGER <<NOT NULL>>
   --
   logo: TINYBLOB
   name: VARCHAR(255) <<NOT NULL>>
   address: VARCHAR(255) <<NOT NULL>>
-  cityId: INTEGER <<NOT NULL>>
   phone: INTEGER <<NOT NULL>>
   email: VARCHAR(255) <<NOT NULL>>
   website: VARCHAR(255)
@@ -38,13 +38,14 @@ entity Boardings {
   profileId: INTEGER <<PK>>
   busId: INTEGER <<PK>>
   stopId: INTEGER <<NOT NULL>>
+  --
   dateTime: TIMESTAMP <<NOT NULL>>
   action: BOOLEAN <<NOT NULL>>
 }
 
 entity SavedAlerts {
   profileId: INTEGER <<PK>>
-  alertId: INTEGER <<NOT NULL>>
+  alertId: INTEGER <<PK>>
 }
 
 entity FamilyMembers {
@@ -56,6 +57,7 @@ entity Buses {
   busId: INTEGER <<PK>>
   driverId: INTEGER <<NOT NULL>>
   schoolId: INTEGER <<NOT NULL>>
+  --
   brand: VARCHAR(255) <<NOT NULL>>
   model: VARCHAR(255) <<NOT NULL>>
   capacity: INTEGER <<NOT NULL>>
@@ -64,9 +66,10 @@ entity Buses {
 }
 
 entity Stops {
-  stopId: INTEGER <<PK>> <<AUTO_INCREMENT>>
-  cityId: INTEGER <<NOT NULL>>
-  schoolId: INTEGER <<NOT NULL>>
+  stopId: INTEGER <<PK>>
+  cityId: INTEGER <<PK>>
+  schoolId: INTEGER <<PK>>
+  --
   address: VARCHAR(255) <<NOT NULL>>
   longitude: DECIMAL <<NOT NULL>>
   latitude: DECIMAL <<NOT NULL>>
@@ -74,7 +77,8 @@ entity Stops {
 
 entity Routes {
   routeId: INTEGER <<PK>>
-  schoolId: INTEGER <<NOT NULL>>
+  schoolId: INTEGER <<PK>>
+  --
   name: VARCHAR(255) <<NOT NULL>>
   targetSector: VARCHAR(255) <<NOT NULL>> <<UNIQUE>>
   startTime: TIME <<NOT NULL>>
@@ -83,20 +87,23 @@ entity Routes {
 
 entity AlertTypes {
   alertTypeId: INTEGER <<PK>> <<AUTO_INCREMENT>>
+  --
   name: VARCHAR(255) <<NOT NULL>>
   description: VARCHAR(255) <<NOT NULL>>
   urgencyLevel: INTEGER <<NOT NULL>>
 }
 
 entity Alerts {
-  alertId: INTEGER <<PK>> <<AUTO_INCREMENT>>
-  alertTypeId: INTEGER <<NOT NULL>>
-  busId: INTEGER <<NOT NULL>>
+  alertId: INTEGER <<PK>>
+  alertTypeId: INTEGER <<PK>>
+  busId: INTEGER <<PK>>
+  --
   dateTime: DATETIME <<NOT NULL>>
 }
 
 entity Cities {
   cityId: INTEGER <<PK>> <<AUTO_INCREMENT>>
+  --
   name: VARCHAR(255) <<NOT NULL>>
   country: VARCHAR(255) <<NOT NULL>>
 }
@@ -118,15 +125,17 @@ entity RouteBusAssignments {
 
 entity SchoolCampuses {
   campusId: INTEGER <<PK>> <<AUTO_INCREMENT>>
-  name: VARCHAR(255) <<NOT NULL>>
   schoolId: INTEGER <<NOT NULL>>
+  --
+  name: VARCHAR(255) <<NOT NULL>>
   address: VARCHAR(255) <<NOT NULL>>
 }
 
 entity Courses {
   courseId: INTEGER <<PK>> <<AUTO_INCREMENT>>
-  name: VARCHAR(255) <<NOT NULL>>
   campusId: INTEGER <<NOT NULL>>
+  --
+  name: VARCHAR(255) <<NOT NULL>>
 }
 
 entity CourseGroups {
@@ -137,6 +146,7 @@ entity CourseGroups {
 entity DriverLicenses {
   licenseId: INTEGER <<PK>>
   profileId: INTEGER <<NOT NULL>>
+  --
   licenseNumber: VARCHAR(255)
   drivingLicense: MEDIUMBLOB <<NOT NULL>>
   licenseExpirationDate: DATE <<NOT NULL>>
@@ -149,6 +159,7 @@ entity ProfileRoles {
 
 entity Roles {
   roleId: INTEGER <<PK>> <<AUTO_INCREMENT>>
+  --
   name: VARCHAR(255) <<NOT NULL>>
   description: VARCHAR(255) <<NOT NULL>>
   permissions: VARCHAR(255) <<NOT NULL>>
@@ -158,6 +169,7 @@ entity ExceptionalDriverUsages {
   usageId: INTEGER <<PK>> <<AUTO_INCREMENT>>
   busId: INTEGER <<NOT NULL>>
   profileId: INTEGER <<NOT NULL>>
+  --
   startDateTime: DATETIME <<NOT NULL>>
   endDateTime: DATETIME <<NOT NULL>>
   reason: VARCHAR(255) <<NOT NULL>>
@@ -167,6 +179,7 @@ entity ExceptionalRouteUsages {
   usageId: INTEGER <<PK>> <<AUTO_INCREMENT>>
   profileId: INTEGER <<NOT NULL>>
   routeId: INTEGER <<NOT NULL>>
+  --
   dateTime: DATETIME <<NOT NULL>>
   reason: VARCHAR(255)
 }
