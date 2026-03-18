@@ -213,6 +213,26 @@ package EstrategiasUsuario {
     }
 }
 
+' strategy'
+package EstrategiasNotificacion {
+
+    interface NotificationStrategy {
+        +showNotification(student : Student, alert : Alert) : void
+    }
+
+    class BoardingNotification {
+        +showNotification(student : Student, alert : Alert) : void
+    }
+
+    class DisembarkNotification {
+        +showNotification(student : Student, alert : Alert) : void
+    }
+
+    class AlertNotification {
+        +showNotification(student : Student, alert : Alert) : void
+    }
+}
+
 'Relations'
 User <|--- UserPermission
 User <|--- AdminPermission
@@ -262,5 +282,12 @@ RemoveStopCommand --> Route
 RemoveStopCommand --> Stop
 UpdateStartTimeCommand --> Route
 UpdateEndTimeCommand --> Route
+
+'Strategy relations
+NotificationStrategy <|.. BoardingNotification
+NotificationStrategy <|.. DisembarkNotification
+NotificationStrategy <|.. AlertNotification
+
+Alert --> NotificationStrategy
 
 @enduml
