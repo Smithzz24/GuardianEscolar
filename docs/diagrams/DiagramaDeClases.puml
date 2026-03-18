@@ -1,0 +1,262 @@
+@startuml GuardianEscolar
+'Clase a observar'
+
+package Observer {
+    interface AccionEstudiante {
+        bajar(estudiante : Estudiante);
+        subir(estudiante : Estudiante);
+    }
+
+    class Alerta {
+
+        - titulo : String
+        - tipoAlerta : String
+        - fechaHora : LocalDate
+        - bus : Bus
+
+        +crearAlerta (titulo, tipoAlerta, fechaHora, bus) : void
+    }
+
+    class Bus {
+        - placa : String
+        - marca : String
+        - capacidadPasajeros : int
+        - vigenciaSOAT : MediumBlob
+        - estadoSOAT : Boolean
+        - estadoGPS : ENUM
+        - observadores : List<IObervador>
+
+
+
+        +actualizarVigenciaSOAT (estadoSOAT) : void
+        +avisarVigenciaVencida (estadoSOAT) : void
+        +actualizarEstadoGPS (estadoGPS) : void
+        +avisarEstadoGPS (estadoGPS) : void
+    }
+
+    interface IObservador {
+        +recibirNotificacion(data : String);
+    }
+
+    Bus ..|> AccionEstudiante
+}
+class Escuela {
+    - nombre : String
+    - direccion : String
+    - ciudad : String
+    - telefono : String
+    - email : String
+    - logo : TinyBlob
+    - tema : ENUM
+
+}
+
+package Comando-GestordeRutas {
+    'Comando gestion de rutas
+    'Invocador
+    class GestorRutas {
+        +ejecutarComando(command : Command) : void
+    }
+
+    'Interfaz comando
+    interface Command {
+        +execute() : void
+    }
+
+    'Comandos concretos
+    class AgregarPasajeroCommand {
+        -ruta : Ruta
+        -estudiante : Estudiante
+        +execute() : void
+    }
+
+    class EliminarPasajeroCommand {
+        -ruta : Ruta
+        -estudiante : Estudiante
+        +execute() : void
+    }
+
+    class AgregarParadaCommand {
+        -ruta : Ruta
+        -parada : Parada
+        +execute() : void
+    }
+
+    class EliminarParadaCommand {
+        -ruta : Ruta
+        -parada : Parada
+        +execute() : void
+    }
+
+    class ActualizarHoraInicioCommand {
+        -ruta : Ruta
+        -horaInicio : LocalDate
+        +execute() : void
+    }
+
+    class ActualizarHoraFinCommand {
+        -ruta : Ruta
+        -horaFin : LocalDate
+        +execute() : void
+    }
+
+    class Ruta {
+        - codigo : String
+        - sectorDestinado : String
+        - horaInicio : LocalDate
+        - horaFin : LocalDate
+        - paradas : ArrayList<Parada>
+        - pasajeros : ArrayList<Estudiante>
+
+        + agregarPasajero(estudiante) : void
+        + eliminarPasajero(estudiante) : void
+        + agregarParada(parada) : void
+        + eliminarParada(parada) : void
+    }
+}
+class Parada {
+    - nombre : String
+    - direccion : String
+    - horaLlegada : LocalDate
+}
+class Abordaje {
+    -tipo
+    -fechaHora : LocalDate
+    - bus : Bus
+    - usuario : usuario
+
+    +agregarAbordaje (tipo, fechaHora, bus, usuario)
+}
+class Curso {
+    - nombre : String
+    - grado : String
+    -estudiantes : ArrayList<Estudiante>
+}
+Package Seguridad{
+    'Seguridad
+    class Persona {
+        - nombre : String
+        - apellido : String
+        - direccion : String
+        - telefono : int
+        - email : String
+        - tipoIdentificacion : Sting
+        - identificacion : int
+    }
+}
+package EstrategiasUsuario {
+    class Usuario {
+        - nombreUsuario : String
+        - contraseña : String
+        - persona : Persona
+    }
+    class Conductor {
+        - licencia : String
+        - estadoLicencia : Boolean
+        - vigenciaLicencia : MediumBlob
+
+        +actualizarEstadoLicencia (estadoLicencia) : void
+        +avisarVigenciaLicencia (vigenciaLicencia) : void
+    }
+
+    package Familias{
+        class Padre {
+
+        }
+        class Estudiante {
+            +escanearQR(bus : Bus);
+
+        }
+        class Familia {
+            - nombre : String
+            - cantidadMiembros : int
+            - Observaciones : String
+            - estudiantes : ArrayList<Estudiante>
+            - padres : ArrayList<Padre>
+        }
+
+    }
+    class Administrador {
+
+    }
+    interface PermisoUsuario {
+        +verRuta ( ) : void
+        +verAlertas ( ) : void
+        +verAbordajes ( ) : void
+        +verParadas ( ) : void
+        +seleccionarRuta ( ) : void
+        +actualizarInformacionPersonal ( ) : void
+    }
+    interface PermisoAdministrador {
+        +registrarUsuario ( ) : void
+        +eliminarUsuario ( ) : void
+        +actualizarInformacionUsuario ( ) : void
+        +asignarPermisos ( ) : void
+        +verAlertas ( ) : void
+        +crearRuta ( ) : void
+        +eliminarRuta ( ) : void
+        +actualizarRuta ( ) : void
+        +crearParada ( ) : void
+        +eliminarParada ( ) : void
+        +verAbordajes ( ) : void
+        +verParadas ( ) : void
+        +verRutas ( ) : void
+        +agregarBus ( ) : void
+        +eliminarBus ( ) : void
+        +actualizarInformacionPersonal ( ) : void
+        +actualizarInoformacionBus ( ) : void
+        +actualizarInformacionEscuela ( ) : void
+    }
+}
+
+'Relaciones'
+Usuario <|--- PermisoUsuario
+Usuario <|--- PermisoAdministrador
+
+PermisoUsuario <|... Conductor
+PermisoUsuario <|... Padre
+PermisoUsuario <|... Estudiante
+PermisoAdministrador <|... Administrador
+
+
+'Asociaciones'
+Alerta o--- Bus
+Usuario o--- Alerta
+
+Escuela o--- Usuario
+Persona o--- Usuario
+Curso o--- Estudiante
+
+Bus o--- Ruta
+Bus o--- Conductor
+Bus o--- Estudiante
+
+
+Ruta *--- Parada
+Abordaje o--- Bus
+
+Familia o--- Padre
+Familia o--- Estudiante
+
+
+'Relaciones comando
+Command <|.. AgregarPasajeroCommand
+Command <|.. EliminarPasajeroCommand
+Command <|.. AgregarParadaCommand
+Command <|.. EliminarParadaCommand
+Command <|.. ActualizarHoraInicioCommand
+Command <|.. ActualizarHoraFinCommand
+
+GestorRutas --> Command
+AgregarPasajeroCommand --> Ruta
+AgregarPasajeroCommand --> Estudiante
+EliminarPasajeroCommand --> Ruta
+EliminarPasajeroCommand --> Estudiante
+AgregarParadaCommand --> Ruta
+AgregarParadaCommand --> Parada
+EliminarParadaCommand --> Ruta
+EliminarParadaCommand --> Parada
+ActualizarHoraInicioCommand --> Ruta
+ActualizarHoraFinCommand --> Ruta
+
+@enduml
