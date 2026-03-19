@@ -2,10 +2,10 @@
 'Observer package'
 
 package Observer {
-    interface StudentAction {
-        disembark(student : Student)
-        board(student : Student)
-    }
+    ' interface StudentAction {
+    '     disembark(student : Student)
+    '     board(student : Student)
+    ' }
 
     class Alert {
 
@@ -32,11 +32,11 @@ package Observer {
         +notifyGpsStatus(gpsStatus) : void
     }
 
-    interface IObserver {
-        +receiveNotification(data : String)
-    }
+    ' interface IObserver {
+    '     +receiveNotification(data : String)
+    ' }
 
-    Bus ..|> StudentAction
+    ' Bus ..|> StudentAction
 }
 
 class School {
