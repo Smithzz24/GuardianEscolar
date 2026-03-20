@@ -1,14 +1,9 @@
 @startuml GuardianEscolar
 'Observer package'
 
-'package Observer {
-    ' interface StudentAction {
-    '     disembark(student : Student)
-    '     board(student : Student)
-    ' }
+package Observer {
 
     class Alert {
-
         - title : String
         - alertType : String
         - dateTime : LocalDate
@@ -26,18 +21,23 @@
         - gpsStatus : ENUM
         - observers : List<IObserver>
 
+        +addObserver(observer : IObserver)
+        +removeObserver(observer : IObserver)
+        +notifyObservers(message : String)
+
         +updateSoatValidity(soatStatus) : void
-        +notifySoatExpired(soatStatus) : void
         +updateGpsStatus(gpsStatus) : void
-        +notifyGpsStatus(gpsStatus) : void
     }
 
-    ' interface IObserver {
-    '     +receiveNotification(data : String)
-    ' }
+    interface IObserver {
+        +receiveNotification(message : String)
+    }
 
-    ' Bus ..|> StudentAction
-'}
+    note right of IObserver
+        Recibe notificaciones del Bus cuando ocurre
+        un evento, sin acoplarse directamente a él y se dirige al usuario
+    end note
+}
 
 class School {
     - name : String
@@ -213,25 +213,7 @@ package EstrategiasUsuario {
     }
 }
 
-' strategy'
-package EstrategiasNotificacion {
 
-    interface NotificationStrategy {
-        +showNotification(student : Student, alert : Alert) : void
-    }
-
-    class BoardingNotification {
-        +showNotification(student : Student, alert : Alert) : void
-    }
-
-    class DisembarkNotification {
-        +showNotification(student : Student, alert : Alert) : void
-    }
-
-    class AlertNotification {
-        +showNotification(student : Student, alert : Alert) : void
-    }
-}
 
 'Relations'
 User <|--- UserPermission
@@ -283,11 +265,8 @@ RemoveStopCommand --> Stop
 UpdateStartTimeCommand --> Route
 UpdateEndTimeCommand --> Route
 
-'Strategy relations
-NotificationStrategy <|.. BoardingNotification
-NotificationStrategy <|.. DisembarkNotification
-NotificationStrategy <|.. AlertNotification
-
-Alert --> NotificationStrategy
+' Conexiones  observer
+IObserver <|.. User
+Bus --> IObserver
 
 @enduml
