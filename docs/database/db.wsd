@@ -1,27 +1,22 @@
-@startuml
+@startuml SchoolGuardian
+skinparam Linetype ortho
 !theme plain
 
-entity Families {
-  familyId: INTEGER <<PK>>
-  --
-  name: VARCHAR(255) <<NOT NULL>>
-  observations: TEXT <<NOT NULL>>
+package Families{
+  entity Family {
+    familyId: INTEGER <<PK>>
+    --
+    name: VARCHAR(255) <<NOT NULL>>
+    observations: TEXT <<NOT NULL>>
+  }
+
+  entity FamilyMember {
+    familyId: INTEGER <<PK>>
+    profileId: INTEGER <<PK>>
+  }
 }
 
-entity Profil {
-  profileId: INTEGER <<PK>> <<AUTO_INCREMENT>>
-  --
-  name: VARCHAR(255) <<NOT NULL>>
-  lastName: VARCHAR(255) <<NOT NULL>>
-  identificationType: VARCHAR(255) <<NOT NULL>>
-  identificationNumber: INTEGER <<NOT NULL>>
-  email: VARCHAR(255) <<NOT NULL>>
-  phone: INTEGER <<NOT NULL>>
-  residenceAddress: VARCHAR(255) <<NOT NULL>>
-  password: VARCHAR(255) <<NOT NULL>>
-}
-
-entity Schools {
+entity School {
   schoolId: INTEGER <<PK>> <<AUTO_INCREMENT>>
   cityId: INTEGER <<NOT NULL>>
   --
@@ -34,7 +29,7 @@ entity Schools {
   theme: VARCHAR(255)
 }
 
-entity Boardings {
+entity Boarding {
   profileId: INTEGER <<PK>>
   busId: INTEGER <<PK>>
   stopId: INTEGER <<NOT NULL>>
@@ -43,17 +38,30 @@ entity Boardings {
   action: BOOLEAN <<NOT NULL>>
 }
 
-entity SavedAlerts {
-  profileId: INTEGER <<PK>>
-  alertId: INTEGER <<PK>>
+package AlertControl {
+  entity SavedAlert {
+    profileId: INTEGER <<PK>>
+    alertId: INTEGER <<PK>>
+  }
+
+  entity AlertTypes {
+    alertTypeId: INTEGER <<PK>> <<AUTO_INCREMENT>>
+    --
+    name: VARCHAR(255) <<NOT NULL>>
+    description: VARCHAR(255) <<NOT NULL>>
+    urgencyLevel: INTEGER <<NOT NULL>>
+  }
+
+  entity Alert {
+    alertId: INTEGER <<PK>>
+    alertTypeId: INTEGER <<PK>>
+    busId: INTEGER <<PK>>
+    --
+    dateTime: DATETIME <<NOT NULL>>
+  }
 }
 
-entity FamilyMembers {
-  familyId: INTEGER <<PK>>
-  profileId: INTEGER <<PK>>
-}
-
-entity Buses {
+entity Bus {
   busId: INTEGER <<PK>>
   driverId: INTEGER <<NOT NULL>>
   schoolId: INTEGER <<NOT NULL>>
@@ -65,7 +73,7 @@ entity Buses {
   gpsStatus: BOOLEAN <<NOT NULL>>
 }
 
-entity Stops {
+entity Stop {
   stopId: INTEGER <<PK>>
   cityId: INTEGER <<PK>>
   schoolId: INTEGER <<PK>>
@@ -75,7 +83,7 @@ entity Stops {
   latitude: DECIMAL <<NOT NULL>>
 }
 
-entity Routes {
+entity Route {
   routeId: INTEGER <<PK>>
   schoolId: INTEGER <<PK>>
   --
@@ -85,21 +93,6 @@ entity Routes {
   endTime: TIME <<NOT NULL>>
 }
 
-entity AlertTypes {
-  alertTypeId: INTEGER <<PK>> <<AUTO_INCREMENT>>
-  --
-  name: VARCHAR(255) <<NOT NULL>>
-  description: VARCHAR(255) <<NOT NULL>>
-  urgencyLevel: INTEGER <<NOT NULL>>
-}
-
-entity Alerts {
-  alertId: INTEGER <<PK>>
-  alertTypeId: INTEGER <<PK>>
-  busId: INTEGER <<PK>>
-  --
-  dateTime: DATETIME <<NOT NULL>>
-}
 
 entity Cities {
   cityId: INTEGER <<PK>> <<AUTO_INCREMENT>>
@@ -113,7 +106,7 @@ entity RouteStudentAssignments {
   routeId: INTEGER <<PK>>
 }
 
-entity RouteStops {
+entity RouteStop {
   routeId: INTEGER <<PK>>
   stopId: INTEGER <<PK>>
 }
@@ -123,7 +116,7 @@ entity RouteBusAssignments {
   routeId: INTEGER <<PK>>
 }
 
-entity SchoolCampuses {
+entity SchoolCampuse {
   campusId: INTEGER <<PK>> <<AUTO_INCREMENT>>
   schoolId: INTEGER <<NOT NULL>>
   --
@@ -131,19 +124,19 @@ entity SchoolCampuses {
   address: VARCHAR(255) <<NOT NULL>>
 }
 
-entity Courses {
+entity Course {
   courseId: INTEGER <<PK>> <<AUTO_INCREMENT>>
   campusId: INTEGER <<NOT NULL>>
   --
   name: VARCHAR(255) <<NOT NULL>>
 }
 
-entity CourseGroups {
+entity CourseGroup {
   profileId: INTEGER <<PK>>
   courseId: INTEGER <<PK>>
 }
 
-entity DriverLicenses {
+entity DriverLicense {
   licenseId: INTEGER <<PK>>
   profileId: INTEGER <<NOT NULL>>
   --
@@ -157,15 +150,7 @@ entity ProfileRol {
   roleId: INTEGER <<PK>>
 }
 
-entity Role {
-  roleId: INTEGER <<PK>> <<AUTO_INCREMENT>>
-  --
-  name: VARCHAR(255) <<NOT NULL>>
-  description: VARCHAR(255) <<NOT NULL>>
-  permissions: VARCHAR(255) <<NOT NULL>>
-}
-
-entity ExceptionalDriverUsages {
+entity ExceptionalDriverUsage {
   usageId: INTEGER <<PK>> <<AUTO_INCREMENT>>
   busId: INTEGER <<NOT NULL>>
   profileId: INTEGER <<NOT NULL>>
@@ -175,7 +160,7 @@ entity ExceptionalDriverUsages {
   reason: VARCHAR(255) <<NOT NULL>>
 }
 
-entity ExceptionalRouteUsages {
+entity ExceptionalRouteUsage {
   usageId: INTEGER <<PK>> <<AUTO_INCREMENT>>
   profileId: INTEGER <<NOT NULL>>
   routeId: INTEGER <<NOT NULL>>
@@ -184,96 +169,119 @@ entity ExceptionalRouteUsages {
   reason: VARCHAR(255)
 }
 
-entity Action {
-  actionId INTEGER <<PK>> <<AUTO_INCREMENT>>
-  --
-  name VARCHAR(255)
-  description TEXT
-}
+package SecureModule {
 
-entity View {
-  viewId INTEGER <<PK>> <<AUTO_INCREMENT>>
-  --
-  name VARCHAR(255)
-  description TEXT
-}
+  entity Profile {
+    profileId: INTEGER <<PK>> <<AUTO_INCREMENT>>
+    --
+    name: VARCHAR(255) <<NOT NULL>>
+    lastName: VARCHAR(255) <<NOT NULL>>
+    identificationType: VARCHAR(255) <<NOT NULL>>
+    identificationNumber: INTEGER <<NOT NULL>>
+    email: VARCHAR(255) <<NOT NULL>>
+    phone: INTEGER <<NOT NULL>>
+    residenceAddress: VARCHAR(255) <<NOT NULL>>
+    password: VARCHAR(255) <<NOT NULL>>
+  }
 
-entity Module {
-  modueId INTEGER <<PK>> <<AUTO_INCREMENT>>
-  --
-  name VARCHAR(255)
-  description TEXT
-}
+  entity Role {
+    roleId: INTEGER <<PK>> <<AUTO_INCREMENT>>
+    --
+    name: VARCHAR(255) <<NOT NULL>>
+    description: VARCHAR(255) <<NOT NULL>>
+    permissions: VARCHAR(255) <<NOT NULL>>
+  }
+  entity Action {
+    actionId INTEGER <<PK>> <<AUTO_INCREMENT>>
+    --
+    name VARCHAR(255)
+    description TEXT
+  }
 
-entity RoleModule {
-  roleModuleId <<PK>> <<AUTO_INCREMENT>>
-  roleId <<FK>>
-  moduleId <<FK>>
-}
+  entity View {
+    viewId INTEGER <<PK>> <<AUTO_INCREMENT>>
+    --
+    name VARCHAR(255)
+    description TEXT
+  }
 
-entity ViewModule {
-  viewModuleId <<PK>> <<AUTO_INCREMENT>>
-  viewId <<FK>>
-  moduleId <<FK>>
-}
+  entity Module {
+    modueId INTEGER <<PK>> <<AUTO_INCREMENT>>
+    --
+    name VARCHAR(255)
+    description TEXT
+  }
 
-entity ViewAction {
-  viewActionId <<PK>> <<AUTO_INCREMENT>>
-  viewId <<FK>>
-  actionId <<FK>>
+  entity RoleModule {
+    roleModuleId <<PK>> <<AUTO_INCREMENT>>
+    roleId <<FK>>
+    moduleId <<FK>>
+  }
+
+  entity ViewModule {
+    viewModuleId <<PK>> <<AUTO_INCREMENT>>
+    viewId <<FK>>
+    moduleId <<FK>>
+  }
+
+  entity ViewAction {
+    viewActionId <<PK>> <<AUTO_INCREMENT>>
+    viewId <<FK>>
+    actionId <<FK>>
+  }
 }
 
 ' Relaciones
 
-SavedAlerts }o--|| Profiles : "profileId -> profileId"
-SavedAlerts }o--|| Alerts : "alertId -> alertId"
+SavedAlert }o--|| Profile : "profileId -> profileId"
+SavedAlert }o--|| Alert : "alertId -> alertId"
 
-Alerts }o--|| AlertTypes : "alertTypeId -> alertTypeId"
-Alerts }o--|| Buses : "busId -> busId"
+Alert }o--|| AlertTypes : "alertTypeId -> alertTypeId"
+Alert }o--|| Bus : "busId -> busId"
 
-SchoolCampuses }o--|| Schools : "schoolId -> schoolId"
+SchoolCampuse }o--|| School : "schoolId -> schoolId"
 
-Profiles ||--o{ FamilyMembers : "profileId -> profileId"
-Families ||--o{ FamilyMembers : "familyId -> familyId"
+Profile ||--o{ FamilyMember : "profileId -> profileId"
+Family ||--o{ FamilyMember : "familyId -> familyId"
 
-Boardings }o--|| Profiles : "profileId -> profileId"
-Boardings }o--|| Buses : "busId -> busId"
-Boardings }o--|| Stops : "stopId -> stopId"
+Boarding }o--|| Profile : "profileId -> profileId"
+Boarding }o--|| Bus : "busId -> busId"
+Boarding }o--|| Stop : "stopId -> stopId"
 
-Stops }o--|| Cities : "cityId -> cityId"
-Schools }o--|| Cities : "cityId -> cityId"
+Stop }o--|| Cities : "cityId -> cityId"
+School }o--|| Cities : "cityId -> cityId"
 
-RouteStudentAssignments }o--|| Routes : "routeId -> routeId"
-RouteStudentAssignments ||--|| Profiles : "profileId -> profileId"
+RouteStudentAssignments }o--|| Route : "routeId -> routeId"
+RouteStudentAssignments ||--|| Profile : "profileId -> profileId"
 
-RouteStops }o--|| Routes : "routeId -> routeId"
-RouteStops }o--|| Stops : "stopId -> stopId"
+RouteStop }o--|| Route : "routeId -> routeId"
+RouteStop }o--|| Stop : "stopId -> stopId"
 
-RouteBusAssignments }o--|| Buses : "busId -> busId"
-RouteBusAssignments }o--|| Routes : "routeId -> routeId"
+RouteBusAssignments }o--|| Bus : "busId -> busId"
+RouteBusAssignments }o--|| Route : "routeId -> routeId"
 
-Buses }o--|| Schools : "schoolId -> schoolId"
-Buses }o--|| Profiles : "driverId -> profileId"
+Bus }o--|| School : "schoolId -> schoolId"
+Bus }o--|| Profile : "driverId -> profileId"
 
-Stops }o--|| Schools : "schoolId -> schoolId"
+Stop }o--|| School : "schoolId -> schoolId"
 
-Routes }o--|| Schools : "schoolId -> schoolId"
+Route }o--|| School : "schoolId -> schoolId"
 
-Courses }o--|| SchoolCampuses : "campusId -> campusId"
+Course }o--|| SchoolCampuse : "campusId -> campusId"
 
-CourseGroups }o--|| Profiles : "profileId -> profileId"
-CourseGroups }o--|| Courses : "courseId -> courseId"
+CourseGroup }o--|| Profile : "profileId -> profileId"
+CourseGroup }o--|| Course : "courseId -> courseId"
 
-DriverLicenses ||--|| Profiles : "profileId -> profileId"
+DriverLicense ||--|| Profile : "profileId -> profileId"
 
-ProfileRol }o--|| Profiles : "profileId -> profileId"
+ProfileRol }o--|| Profile : "profileId -> profileId"
 ProfileRol }o--|| Role : "roleId -> roleId"
 
-ExceptionalDriverUsages }o--|| Buses : "busId -> busId"
-ExceptionalDriverUsages }o--|| Profiles : "profileId -> profileId"
+ExceptionalDriverUsage }o--|| Bus : "busId -> busId"
+ExceptionalDriverUsage }o--|| Profile : "profileId -> profileId"
 
-ExceptionalRouteUsages }o--|| Profil : "profileId -> profileId"
-ExceptionalRouteUsages }o--|| Routes : "routeId -> routeId"
+ExceptionalRouteUsage }o--|| Profile : "profileId -> profileId"
+ExceptionalRouteUsage }o--|| Route : "routeId -> routeId"
 
 Module ||--o{ RoleModule
 Role ||--o{ RoleModule
