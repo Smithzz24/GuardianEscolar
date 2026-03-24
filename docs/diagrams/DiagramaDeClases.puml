@@ -1,4 +1,5 @@
 @startuml GuardianEscolar
+skinparam Linetype ortho
 'Observer package'
 
 package Observer {
@@ -20,6 +21,7 @@ package Observer {
         - soatStatus : Boolean
         - gpsStatus : ENUM
         - observers : List<IObserver>
+        - state IState
 
         +addObserver(observer : IObserver)
         +removeObserver(observer : IObserver)
@@ -27,6 +29,7 @@ package Observer {
 
         +updateSoatValidity(soatStatus) : void
         +updateGpsStatus(gpsStatus) : void
+        +show() : void
     }
 
     interface IObserver {
@@ -213,6 +216,22 @@ package EstrategiasUsuario {
     }
 }
 
+interface IState {
+ + show() : void
+}
+
+class BusStopped {
+ + show() : void
+}
+
+class BusInMotion {
+ + show() : void
+}
+
+class StrandedBus {
+ + show() : void
+}
+
 
 
 'Relations'
@@ -268,5 +287,11 @@ UpdateEndTimeCommand --> Route
 ' Conexiones  observer
 IObserver <|.. User
 Bus --> IObserver
+
+' State
+BusStopped ..|> IState
+BusInMotion ..|> IState
+StrandedBus ..|> IState
+Bus --> IState
 
 @enduml
