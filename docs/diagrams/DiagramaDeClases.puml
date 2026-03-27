@@ -1,4 +1,4 @@
-@startuml GuardianEscolar
+@startuml
 skinparam Linetype ortho
 'Observer package'
 
@@ -27,19 +27,25 @@ package Observer {
         +removeObserver(observer : IObserver)
         +notifyObservers(message : String)
 
+        +notifyBoarding(boarding : Boarding) : void
+        +notifyBusState(state : IState) : void
+
         +updateSoatValidity(soatStatus) : void
         +updateGpsStatus(gpsStatus) : void
+        
         +show() : void
+        +getIState(state : IState) : void
     }
 
     interface IObserver {
-        +receiveNotification(message : String)
+        +receiveBoarding(b : Boarding)
+        +receiveBusState(state: IState)
     }
 
-    note right of IObserver
-        Recibe notificaciones del Bus cuando ocurre
-        un evento, sin acoplarse directamente a él y se dirige al usuario
-    end note
+    ' note right of IObserver
+      '   Recibe notificaciones del Bus cuando ocurre
+        ' un evento, sin acoplarse directamente a él y se dirige al usuario
+    ' end note
 }
 
 class School {
@@ -127,7 +133,7 @@ class Boarding {
     - type
     - dateTime : LocalDate
     - bus : Bus
-    - user : User
+    - student : Student
 
     +addBoarding(type, dateTime, bus, user)
 }
@@ -168,7 +174,8 @@ package EstrategiasUsuario {
 
     package Familias{
         class Parent {
-
+            +receiveBoarding(boarding : Boarding)
+            +receiveBusState(state : IState)
         }
         class Student {
             +scanQR(bus : Bus)
@@ -285,13 +292,11 @@ UpdateStartTimeCommand --> Route
 UpdateEndTimeCommand --> Route
 
 ' Conexiones  observer
-IObserver <|.. User
-Bus --> IObserver
+Parent --|> IObserver
 
 ' State
 BusStopped ..|> IState
 BusInMotion ..|> IState
 StrandedBus ..|> IState
 Bus --> IState
-
 @enduml
