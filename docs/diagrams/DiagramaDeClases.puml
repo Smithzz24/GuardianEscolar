@@ -34,7 +34,7 @@ package Observer {
         +updateGpsStatus(gpsStatus) : void
         
         +show() : void
-        +getIState(state : IState) : void
+        +getIState(newState : IState) : void
     }
 
     interface IObserver {
@@ -266,6 +266,7 @@ Bus o--- Student
 
 Route *--- Stop
 Boarding o--- Bus
+Boarding o--- Student
 
 Family o--- Parent
 Family o--- Student
