@@ -8,7 +8,7 @@ import { NavbarAdmin } from '../../../../../shared/components/navbar/navbar-admi
 import { CardList } from '../../../../../shared/components/cards/card-list/card-list';
 
 @Component({
-  selector: 'app-padres',
+  selector: 'app-familia',
   imports: [
     MatIconModule,
     MatButtonModule,
@@ -18,7 +18,7 @@ import { CardList } from '../../../../../shared/components/cards/card-list/card-
     CardList,
     NavbarAdmin,
   ],
-  templateUrl: './padres.html',
-  styleUrl: './padres.css',
+  templateUrl: './familia.html',
+  styleUrl: './familia.css',
 })
-export class Padres {}
+export class Familia {}
