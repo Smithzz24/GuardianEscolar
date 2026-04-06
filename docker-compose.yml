@@ -15,10 +15,14 @@ services:
     image: liquibase/liquibase:5.0+
     depends_on:
       - db:
-          condition: service_healthy
-    environment:
-      - name=value
-    
+        condition: service_healthy
+  
+  # app-web-frontend:
+  #   build: ./dvlp-front/dvlp-web
+  #   container_name: app-web-frontend
+  #   ports:
+  #     - 4200:80
+
 volumes:
   postgres-data:
     driver: local
