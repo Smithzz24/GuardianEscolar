@@ -1,28 +1,16 @@
-# School Guardian
+# GUARDIAN ESCOLAR
 
-## Design patterns
-
-### Command
-
-### Strategy
-
-### State
-
-### Proxy
-
-### Factory Method
-
-## Aplicativo Web
+## Web Application
 
 ### FrontEnd
 
-- Angular v21
+- Angular version 21
 
 ### BackEnd
 
-- 
+- .Net
 
-## Aplicativo Movil
+## Mobile Application
 
 ### FrontEnd
 
@@ -30,16 +18,17 @@
 
 ### BackEnd
 
-- ASP.NET Core
+- .Net
 
 ## Database engine
 
-- PostgreSQL v16
+- PostgreSQL
 
 ## Database manager
 
-- pgAdmin
+- pgAdmin 4
 
 ## Utils
 
 - Docker
+- AWS
