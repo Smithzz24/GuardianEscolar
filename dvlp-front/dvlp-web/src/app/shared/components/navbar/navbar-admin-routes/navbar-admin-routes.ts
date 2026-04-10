@@ -5,28 +5,28 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs/operators';
-import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-navbar-admin',
+  selector: 'app-navbar-admin-routes',
   standalone: true,
-  imports: [MatToolbarModule, MatButtonModule, MatIconModule, CommonModule, RouterModule],
-  templateUrl: './navbar-admin.html',
-  styleUrl: './navbar-admin.css',
+  imports: [MatToolbarModule, MatButtonModule, MatIconModule, CommonModule],
+  templateUrl: './navbar-admin-routes.html',
+  styleUrl: './navbar-admin-routes.css',
 })
-export class NavbarAdmin {
+export class NavbarAdminRoutes {
   
 navItems = [
-  { icon: 'person_raised_hand', route: '/admin/usuarios' },
-  { icon: 'escalator_warning',  route: '/admin/padres' },
-  { icon: 'engineering',        route: '/admin/conductores' },
-  { icon: 'family_restroom',    route: '/admin/familias' },
+  { icon: 'directions_bus', route: '/admin/buses' },
+  { icon: 'location_on',  route: '/admin/paradas' },
+  { icon: 'route',        route: '/admin/rutas' },
+
 ];
 
   activeRoute = '';
 
   constructor(private router: Router) {
     // Escucha cambios de ruta para actualizar el botón activo
+    this.activeRoute = this.router.url;
     this.router.events
       .pipe(filter(e => e instanceof NavigationEnd))
       .subscribe((e: any) => {
