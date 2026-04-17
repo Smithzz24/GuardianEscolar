@@ -276,3 +276,5 @@ Ref view_module: ViewModule.moduleId > Module.moduleId
 
 Ref view_action: ViewAction.viewId > View.viewId
 Ref view_action: ViewAction.actionId > Action.actionId
+
+Ref n: Course.campusId > SchoolCampuse.campusId
