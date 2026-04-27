@@ -9,7 +9,7 @@ Table Person {
     residenceAddress varchar(255)
 }
 
-Table IdentificacionType {
+Table IdentificationType {
   identificacionTypeId int [primary key]
   name varchar(255)
 }
@@ -116,11 +116,30 @@ Table Bus {
   busId int [primary key]
   driverId int
   schoolId int
-  brand varchar(255)
-  model varchar(255)
-  capacity int
   soatValidity date
   gpsStatus boolean
+  lineModelId int
+}
+
+Table Brand {
+  brandId int [primary key]
+  name varchar(255)
+}
+
+Table Model {
+  modelId int [primary key]
+  year year
+}
+Table Line {
+  lineId int [primary key]
+  name varchar(255)
+  brandId int
+}
+Table LineModel {
+  lineModelid int [primary key]
+  lineId int
+  modelId int
+  capacity itn
 }
 
 Table Stop {
@@ -142,7 +161,7 @@ Table Route {
 }
 
 
-Table Cities {
+Table City {
   cityId int [primary key]
   name VARCHAR(255) [not null]
   country VARCHAR(255) [not null]
@@ -228,7 +247,7 @@ Table ExceptionalRouteUsage {
 
 // Relationships
 
-Ref person_profile: Profile.personId > Person.personId
+Ref person_profile: Profile.personId - Person.personId
 Ref profile_rol: ProfileRol.profileId > Profile.profileId
 Ref profile_rol: ProfileRol.roleId > Role.roleId
 
@@ -247,8 +266,8 @@ Ref boarding: Boarding.profileId > Profile.profileId
 Ref boarding: Boarding.busId > Bus.busId
 Ref boarding: Boarding.stopId > Stop.stopId
 
-Ref cities: Stop.cityId > Cities.cityId
-Ref cities: School.cityId > Cities.cityId
+Ref cities: Stop.cityId > City.cityId
+Ref cities: School.cityId > City.cityId
 
 Ref route_student_assignments: RouteStudentAssignments.routeId > Route.routeId
 Ref route_student_assignments: RouteStudentAssignments.profileId > Profile.profileId
@@ -289,7 +308,8 @@ Ref view_action: ViewAction.actionId > Action.actionId
 
 Ref n: Course.campusId > SchoolCampuse.campusId
 
-Ref identificacionType_person: Person.identificacionTypeId - IdentificacionType.identificacionTypeId
-Ref view_action: ViewAction.actionId > Action.actionId
-
-Ref n: Course.campusId > SchoolCampuse.campusId
+Ref identificacionType_person: Person.identificacionTypeId - IdentificationType.identificacionTypeId
+Ref brand_line: Brand.brandId < Line.brandId
+ref bus_model: LineModel.lineModelid < Bus.lineModelId
+ref lineModel_line: Line.lineId < LineModel.lineId
+ref lineModel_line: Model.modelId < LineModel.modelId
