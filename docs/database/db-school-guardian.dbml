@@ -139,7 +139,8 @@ Table LineModel {
   lineModelid int [primary key]
   lineId int
   modelId int
-  capacity itn
+  capacity int
+  plate varchar(50)
 }
 
 Table Stop {
