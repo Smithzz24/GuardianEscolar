@@ -17,20 +17,11 @@ export class Main {
   steps: any[] = [];
 
   ngOnInit() {
-
-    this.loadTranslations();
-    this.translate.onLangChange.subscribe(() => {
-      this.loadTranslations();
+    this.translate.get('features.cards').subscribe((data: any[]) => {
+      this.cards = data;
     });
-  }
-
-  loadTranslations() {
-    this.translate.get('features.cards').subscribe((data: any) => {
-      this.cards = Array.isArray(data) ? data : [];
-    });
-    this.translate.get('how_it_works.steps').subscribe((data: any) => {
-      this.steps = Array.isArray(data) ? data : [];
-
+    this.translate.get('how_it_works.steps').subscribe((data: any[]) => {
+      this.steps = data;
     });
   }
 }

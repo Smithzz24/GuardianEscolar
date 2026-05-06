@@ -1,51 +1,34 @@
 <div class="modal-overlay" (click)="cerrar()">
   <div class="modal" (click)="$event.stopPropagation()">
-
-    <!-- HEADER -->
+    
+    <!-- Header -->
     <div class="modal__header">
-      <h2 class="modal__title">
-        {{ titleKey | translate }}
-      </h2>
+      <h2 class="modal__title">{{ config.title }}</h2>
     </div>
 
-    <!-- INFO PRINCIPAL -->
+    <!-- Logo e información principal -->
     <div class="modal__header-info">
       <div class="modal__logo">
         <mat-icon>{{ config.icon }}</mat-icon>
       </div>
-
       <p class="modal__name">{{ displayName }}</p>
-
-      <p class="modal__type">
-        {{ ('record_information.' + type + '.title') | translate }}
-      </p>
+      <p class="modal__type" *ngIf="displayType">{{ displayType }}</p>
     </div>
 
-    <!-- GRID -->
+    <!-- Info Grid -->
     <div class="modal__info-grid">
       <ng-container *ngFor="let field of getVisibleFields()">
         <div class="modal__info-item" [ngClass]="getGridClass(field)">
-          
-          <p class="modal__info-label">
-            {{ getLabelKey(field.key) | translate }}
-          </p>
-
-          <p class="modal__info-value">
-            {{ field.value }}
-          </p>
-
+          <p class="modal__info-label">{{ field.label }}</p>
+          <p class="modal__info-value">{{ getValue(field) }}</p>
         </div>
       </ng-container>
     </div>
 
-    <!-- FOOTER -->
+    <!-- Footer -->
     <div class="modal__footer">
-      <button
-        class="modal__btn modal__btn--submit"
-        type="button"
-        (click)="cerrar()"
-      >
-        {{ 'common.close' | translate }}
+      <button class="modal__btn modal__btn--submit" type="button" (click)="cerrar()">
+        Salir
       </button>
     </div>
 

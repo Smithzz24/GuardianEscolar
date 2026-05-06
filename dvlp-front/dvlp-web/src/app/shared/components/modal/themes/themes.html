@@ -1,12 +1,12 @@
 <div class="modal-backdrop" (click)="closeModal()">
   <div class="modal" (click)="$event.stopPropagation()">
 
-    <h3>{{ 'theme.title' | translate }}</h3>
-    <p>{{ 'theme.subtitle' | translate }}</p>
+    <h3>Cambiar tema</h3>
+    <p>Selecciona el color del panel</p>
 
     <!-- CLARO -->
     <div class="light-themes-container">
-      <h4>{{ 'theme.light' | translate }}</h4>
+      <h4>Claro</h4>
       <div class="themes-grid">
 
         <!-- Azul claro -->
@@ -15,11 +15,7 @@
           (click)="setTheme('light-theme-blue')">
 
           <div class="active-badge"
-<<<<<<< HEAD
-            *ngIf="currentTheme === 'light-theme-blue'">{{ 'theme.select' | translate }}</div>
-=======
             *ngIf="currentTheme === 'light-theme-blue'">Activo</div>
->>>>>>> develop
 
           <div class="theme-preview theme-preview-light">
             <div class="theme-sidebar" style="background: #1A56DB;"></div>
@@ -31,11 +27,7 @@
           </div>
 
           <div class="theme-option">
-<<<<<<< HEAD
-            <span class="theme-name">{{ 'theme.blue' | translate }}</span>
-=======
             <span class="theme-name">Azul</span>
->>>>>>> develop
             <span class="radio-wrapper">
               <input type="radio" name="theme"
                 [checked]="currentTheme === 'light-theme-blue'"
@@ -52,11 +44,7 @@
           (click)="setTheme('light-theme-green')">
 
           <div class="active-badge"
-<<<<<<< HEAD
-            *ngIf="currentTheme === 'light-theme-green'">{{ 'theme.select' | translate }}</div>
-=======
             *ngIf="currentTheme === 'light-theme-green'">Activo</div>
->>>>>>> develop
 
           <div class="theme-preview theme-preview-light">
             <div class="theme-sidebar" style="background: #16A34A;"></div>
@@ -68,11 +56,7 @@
           </div>
 
           <div class="theme-option">
-<<<<<<< HEAD
-            <span class="theme-name">{{ 'theme.green' | translate }}</span>
-=======
             <span class="theme-name">Verde</span>
->>>>>>> develop
             <span class="radio-wrapper">
               <input type="radio" name="theme"
                 [checked]="currentTheme === 'light-theme-green'"
@@ -88,7 +72,7 @@
 
     <!-- OSCURO -->
     <div class="dark-themes-container">
-      <h4>{{ 'theme.dark' | translate }}</h4>
+      <h4>Oscuro</h4>
       <div class="themes-grid">
 
         <!-- Azul oscuro -->
@@ -97,11 +81,7 @@
           (click)="setTheme('dark-theme-blue')">
 
           <div class="active-badge"
-<<<<<<< HEAD
-            *ngIf="currentTheme === 'dark-theme-blue'">{{ 'theme.select' | translate }}</div>
-=======
             *ngIf="currentTheme === 'dark-theme-blue'">Activo</div>
->>>>>>> develop
 
           <div class="theme-preview theme-preview-dark">
             <div class="theme-sidebar" style="background: #3B82F6;"></div>
@@ -113,11 +93,7 @@
           </div>
 
           <div class="theme-option">
-<<<<<<< HEAD
-            <span class="theme-name">{{ 'theme.blue' | translate }}</span>
-=======
             <span class="theme-name">Azul</span>
->>>>>>> develop
             <span class="radio-wrapper">
               <input type="radio" name="theme"
                 [checked]="currentTheme === 'dark-theme-blue'"
@@ -134,11 +110,7 @@
           (click)="setTheme('dark-theme-green')">
 
           <div class="active-badge"
-<<<<<<< HEAD
-            *ngIf="currentTheme === 'dark-theme-green'">{{ 'theme.select' | translate }}</div>
-=======
             *ngIf="currentTheme === 'dark-theme-green'">Activo</div>
->>>>>>> develop
 
           <div class="theme-preview theme-preview-dark">
             <div class="theme-sidebar" style="background: #22C55E;"></div>
@@ -150,11 +122,7 @@
           </div>
 
           <div class="theme-option">
-<<<<<<< HEAD
-            <span class="theme-name">{{ 'theme.green' | translate }}</span>
-=======
             <span class="theme-name">Verde</span>
->>>>>>> develop
             <span class="radio-wrapper">
               <input type="radio" name="theme"
                 [checked]="currentTheme === 'dark-theme-green'"
@@ -169,13 +137,8 @@
     </div>
 
     <div class="btn-themes">
-<<<<<<< HEAD
-      <button class="close-btn" (click)="closeModal()"> {{ 'theme.buttons.cancel' | translate }}</button>
-      <button class="apply-btn" (click)="closeModal()"> {{ 'theme.buttons.apply' | translate }}</button>
-=======
       <button class="close-btn" (click)="closeModal()">Cancelar</button>
       <button class="apply-btn" (click)="closeModal()">Aplicar</button>
->>>>>>> develop
     </div>
 
   </div>

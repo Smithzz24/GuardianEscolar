@@ -2,21 +2,27 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RecordData } from '@shared/components/modal/record-information/record-information.types';
-import { TranslateModule } from '@ngx-translate/core';
+import { RecordData } from '@shared/components/modal/record-information/record-information';
 
 export type CardType =
-  | 'estudiante' | 'acudiente' | 'conductor' | 'familia'
-  | 'bus' | 'parada' | 'ruta' | 'admins' | 'schools';
+  | 'estudiante'
+  | 'acudiente'
+  | 'conductor'
+  | 'familia'
+  | 'bus'
+  | 'parada'
+  | 'ruta'
+  | 'admins'
+  | 'schools';
 
+// Campos que se muestran en cada item de la lista
 export interface ItemField {
-  key: string;
-  label?: string;          
-  labelKey?: string;        
-  halfWidth?: boolean;
+  key: string;        // nombre del campo en el objeto de datos
+  label?: string;     // etiqueta opcional (si no se pone, solo muestra el valor)
+  halfWidth?: boolean; // va en fila de dos
 }
 
-// Iconos
+// Icono del avatar por tipo
 const ICONS: Record<CardType, string> = {
   estudiante: 'person',
   acudiente: 'escalator_warning',
@@ -29,20 +35,19 @@ const ICONS: Record<CardType, string> = {
   admins: 'admin_panel_settings',
 };
 
-// Claves de traducción para títulos
-const TITLE_KEYS: Record<CardType, string> = {
-  estudiante: 'card_list.estudiante',
-  acudiente: 'card_list.acudiente',
-  conductor: 'card_list.conductor',
-  familia: 'card_list.familia',
-  bus: 'card_list.bus',
-  parada: 'card_list.parada',
-  ruta: 'card_list.ruta',
-  admins: 'card_list.admins',
-  schools: 'card_list.schools',
+const TITLES: Record<CardType, string> = {
+  estudiante: 'Estudiantes registrados',
+  acudiente: 'Acudientes registrados',
+  conductor: 'Conductores registrados',
+  familia: 'Familias registradas',
+  bus: 'Buses registrados',
+  parada: 'Paradas registradas',
+  ruta: 'Rutas registradas',
+  admins: 'Administradores registrados',
+  schools: 'Escuelas registradas',
 };
 
-// Campos a mostrar (con claves de traducción)
+// Qué campos muestra cada item en la lista
 const ITEM_FIELDS: Record<CardType, ItemField[]> = {
   estudiante: [
     { key: 'nombre' },
@@ -58,41 +63,41 @@ const ITEM_FIELDS: Record<CardType, ItemField[]> = {
   conductor: [
     { key: 'nombre' },
     { key: 'identificacion' },
-    { key: 'licencia', labelKey: 'card_list.labels.licencia_vigente', halfWidth: true },
+    { key: 'licencia', label: 'Licencia vigente', halfWidth: true },
     { key: 'telefono', halfWidth: true },
   ],
   familia: [
     { key: 'nombre' },
-    { key: 'acudiente', labelKey: 'card_list.labels.acudiente' },
+    { key: 'acudiente', label: 'Acudiente' },
     { key: 'telefono' },
   ],
   bus: [
-    { key: 'matricula', labelKey: 'card_list.labels.placa' },
-    { key: 'conductor', labelKey: 'card_list.labels.nombre_conductor' },
+    { key: 'matricula', label: 'Placa' },
+    { key: 'conductor', label: 'Nombre conductor' },
     { key: 'marca', halfWidth: true },
     { key: 'modelo', halfWidth: true },
   ],
   parada: [
     { key: 'nombre' },
-    { key: 'direccion', labelKey: 'card_list.labels.direccion' },
+    { key: 'direccion', label: 'Dirección' },
     { key: 'latitud', halfWidth: true },
     { key: 'longitud', halfWidth: true },
   ],
   ruta: [
     { key: 'nombre' },
-    { key: 'destino', labelKey: 'card_list.labels.destino_final' },
-    { key: 'horaInicio', labelKey: 'card_list.labels.hora_inicio', halfWidth: true },
-    { key: 'horaFin', labelKey: 'card_list.labels.hora_final', halfWidth: true },
+    { key: 'destino', label: 'Destino final' },
+    { key: 'horaInicio', label: 'Hora inicio', halfWidth: true },
+    { key: 'horaFin', label: 'Hora final', halfWidth: true },
   ],
   admins: [
     { key: 'nombre' },
     { key: 'identificacion' },
-    { key: 'correo', labelKey: 'card_list.labels.correo_electronico', halfWidth: true },
+    { key: 'correo', label: 'Correo electrónico', halfWidth: true },
     { key: 'telefono', halfWidth: true },
   ],
   schools: [
     { key: 'nombre' },
-    { key: 'direccion', labelKey: 'card_list.labels.direccion' },
+    { key: 'direccion', label: 'Dirección' },
   ],
 };
 
@@ -321,21 +326,20 @@ const MOCK_DATA: Record<CardType, any[]> = {
 @Component({
   selector: 'app-card-list',
   standalone: true,
-  imports: [MatIconModule, CommonModule, FormsModule, TranslateModule],
+  imports: [MatIconModule, CommonModule, FormsModule],
   templateUrl: './card-list.html',
   styleUrl: './card-list.css',
 })
 export class CardList {
   @Input() type: CardType = 'estudiante';
-
   @Output() viewItem = new EventEmitter<RecordData>();
   @Output() editItem = new EventEmitter<RecordData>();
   @Output() deleteItem = new EventEmitter<RecordData>();
 
   searchText = '';
 
-  get titleKey(): string {
-    return TITLE_KEYS[this.type];
+  get title(): string {
+    return TITLES[this.type];
   }
 
   get icon(): string {
@@ -347,19 +351,15 @@ export class CardList {
   }
 
   get items(): any[] {
-    return MOCK_DATA[this.type] || [];
+    return MOCK_DATA[this.type];
   }
 
-  get filteredItems(): any[] {
-    if (!this.searchText?.trim()) return this.items;
-    const term = this.searchText.toLowerCase().trim();
-    return this.items.filter(item =>
-      Object.values(item).some(value =>
-        value?.toString().toLowerCase().includes(term)
-      )
-    );
+  // Devuelve los campos normales (no halfWidth) del item
+  get mainFields(): ItemField[] {
+    return this.itemFields.filter(f => !f.halfWidth);
   }
 
+  // Agrupa los halfWidth en parejas
   get rowFields(): [ItemField, ItemField][] {
     const half = this.itemFields.filter(f => f.halfWidth);
     const rows: [ItemField, ItemField][] = [];
@@ -369,7 +369,15 @@ export class CardList {
     return rows;
   }
 
-  showDetails(item: RecordData): void { this.viewItem.emit(item); }
-  editDetails(item: RecordData): void { this.editItem.emit(item); }
-  deleteDetails(item: RecordData): void { this.deleteItem.emit(item); }
+  showDetails(item: RecordData): void {
+    this.viewItem.emit(item);
+  }
+
+  editDetails(item: RecordData): void {
+    this.editItem.emit(item);
+  }
+
+  deleteDetails(item: RecordData): void {
+    this.deleteItem.emit(item);
+  }
 }

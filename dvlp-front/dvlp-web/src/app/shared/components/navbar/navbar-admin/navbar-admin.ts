@@ -6,12 +6,11 @@ import { Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs/operators';
 import { RouterModule } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-navbar-admin',
   standalone: true,
-  imports: [MatToolbarModule, MatButtonModule, MatIconModule, CommonModule, RouterModule, TranslateModule],
+  imports: [MatToolbarModule, MatButtonModule, MatIconModule, CommonModule, RouterModule],
   templateUrl: './navbar-admin.html',
   styleUrl: './navbar-admin.css',
 })

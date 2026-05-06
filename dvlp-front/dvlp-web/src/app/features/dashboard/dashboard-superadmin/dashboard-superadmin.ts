@@ -6,7 +6,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NavbarDashboard } from '@shared/components/navbar/navbar-dashboard/navbar-dashboard';
 import { SidebarSuperadmin } from '@shared/components/navbar/sidebar-superadmin/sidebar-superadmin';
-import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-dashboard-superadmin',
@@ -16,8 +15,7 @@ import { TranslateModule } from '@ngx-translate/core';
             MatButtonModule, 
             MatIconModule, 
             SidebarSuperadmin,
-            RouterModule,
-            TranslateModule],
+            RouterModule],
   templateUrl: './dashboard-superadmin.html',
   styleUrl: './dashboard-superadmin.css',
 })

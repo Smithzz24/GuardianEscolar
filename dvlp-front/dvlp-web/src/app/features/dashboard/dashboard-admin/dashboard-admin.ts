@@ -4,13 +4,12 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { TranslateModule } from '@ngx-translate/core';
+
 import { NavbarDashboard } from '@shared/components/navbar/navbar-dashboard/navbar-dashboard';
 import { Comments } from '@shared/components/modal/comments/comments';
 import { UpdateInformation } from '@shared/components/modal/update-information/update-information';
 import { SidebarAdmin } from '@shared/components/navbar/sidebar-admin/sidebar-admin';
 import {  RecordInformation,  RecordData} from '@shared/components/modal/record-information/record-information';
-
 import { CardType } from '@shared/components/cards/card-list/card-list';
 
 const MOCK_DATA: Partial<Record<CardType, RecordData[]>> = {
@@ -40,8 +39,7 @@ const MOCK_DATA: Partial<Record<CardType, RecordData[]>> = {
     Comments,
     UpdateInformation,
     SidebarAdmin,
-    RecordInformation,
-    TranslateModule
+    RecordInformation
   ],
   templateUrl: './dashboard-admin.html',
   styleUrls: ['./dashboard-admin.css']
