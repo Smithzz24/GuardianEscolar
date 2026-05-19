@@ -6,7 +6,6 @@ Table Person {
     email varchar(255)
     phone int
     residenceAddress varchar(255)
-    password varchar(255)
 }
 
 Table Role {
@@ -215,7 +214,6 @@ Table IdentificationType {
   identificationId int [primary key]
   name varchar(100)
 }
-
 
 // Relationships
 
