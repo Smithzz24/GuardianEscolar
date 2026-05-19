@@ -2,22 +2,18 @@ Table Person {
     personId int [primary key]
     name varchar(255)
     lastName varchar(255)
-    identificacionTypeId int
-    identificationNumber varchar(255)
+    identificationId int
     email varchar(255)
-    phone varchar(20)
+    phone int
     residenceAddress varchar(255)
-}
-
-Table IdentificationType {
-  identificacionTypeId int [primary key]
-  name varchar(255)
+    password varchar(255)
 }
 
 Table Role {
     roleId int [primary key]
     name varchar(255)
     description varchar(255)
+    permissions varchar(255)
 }
 
 Table Action {
@@ -64,27 +60,25 @@ Table Family {
 }
 
 Table FamilyMember {
-    familyId int
-    profileId int
-    primary key (familyId, profileId)
+    familyId int [primary key]
+    profileId int [primary key]
 }
 
 Table School {
   schoolId int [primary key]
   cityId int 
-  logo varchar(255)
+  logo TINYBLOB
   name varchar(255)
   address varchar(255)
-  phone varchar(20)
+  phone int
   email varchar(255)
   website varchar(255)
   theme varchar(255)
 }
 
 Table Boarding {
-  boardinId int [primary key]
-  profileId int
-  busId int
+  profileId int [primary key]
+  busId int [primary key]
   stopId int
   dateTime timestamp
   action boolean
@@ -92,9 +86,8 @@ Table Boarding {
 
 
 Table SavedAlert {
-    profileId int
-    alertId int
-    primary key (profileId, alertId)
+    profileId int [primary key]
+    alertId int [primary key]
   }
 
 Table AlertType {
@@ -106,8 +99,8 @@ Table AlertType {
 
 Table Alert {
     alertId int [primary key]
-    alertTypeId int
-    busId int
+    alertTypeId int [primary key]
+    busId int [primary key]
     dateTime datetime 
   }
 
@@ -116,37 +109,17 @@ Table Bus {
   busId int [primary key]
   driverId int
   schoolId int
-  soatValidity date
-  gpsStatus boolean
-  lineModelId int
-}
-
-Table Brand {
-  brandId int [primary key]
-  name varchar(255)
-}
-
-Table Model {
-  modelId int [primary key]
-  year year
-}
-Table Line {
-  lineId int [primary key]
-  name varchar(255)
-  brandId int
-}
-Table LineModel {
-  lineModelid int [primary key]
-  lineId int
-  modelId int
+  brand varchar(255)
+  model varchar(255)
   capacity int
-  plate varchar(50)
+  soatValidity mediumblob
+  gpsStatus boolean
 }
 
 Table Stop {
   stopId int [primary key]
-  cityId int
-  schoolId int
+  cityId int [primary key]
+  schoolId int [primary key]
   address varchar(255)
   longitude decimal
   latitude decimal
@@ -154,36 +127,33 @@ Table Stop {
 
 Table Route {
   routeId int [primary key]
-  schoolId int
+  schoolId int [primary key]
   name varchar(255)
-  targetSector varchar(255)
+  targetSector varchar(255) unique
   startTime time [not null]
   endTime time [not null]
 }
 
 
-Table City {
+Table Cities {
   cityId int [primary key]
   name VARCHAR(255) [not null]
   country VARCHAR(255) [not null]
 }
 
 Table RouteStudentAssignments {
-  profileId int
-  routeId int
-  primary key(profileId, routeId)
+  profileId int [primary key]
+  routeId int [primary key]
 }
 
 Table RouteStop {
-  routeId int
-  stopId int
-  primary key (routeId, stopId)
+  routeId int [primary key]
+  stopId int [primary key]
 }
 
 Table RouteBusAssignments {
-  busId int
-  routeId int
-  primary key(busId, routeId)
+  busId int [primary key]
+  routeId int [primary key]
 }
 
 Table SchoolCampuse {
@@ -200,29 +170,28 @@ Table Course {
 }
 
 Table CourseGroup {
-  profileId int
-  courseId int
-  primary key (profileId, courseId)
+  profileId int [primary key]
+  courseId int [primary key]
 }
 
 Table DriverLicense {
   licenseId int [primary key]
   profileId int [not null]
   licenseNumber varchar(255)
-  drivingLicense varchar(255) [not null]
+  drivingLicense mediumblob [not null]
   licenseExpirationDate date [not null]
 }
 
 Table ProfileRol {
-  profileId int
-  roleId int
-  primary key (profileId, roleId)
+  profileId int [primary key]
+  roleId int [primary key]
 }
 
 Table Profile {
     profileId int [primary key]
     personId int [not null]
-    passwordHash varchar(255)
+    // userName varchar(255) [not null]
+    password varchar(255) [not null]
 }
 
 Table ExceptionalDriverUsage {
@@ -242,13 +211,17 @@ Table ExceptionalRouteUsage {
   reason varchar(255)
 }
 
-
-
+Table IdentificationType {
+  identificationId int [primary key]
+  name varchar(100)
+}
 
 
 // Relationships
 
-Ref person_profile: Profile.personId - Person.personId
+Ref identification_person: Person.identificationId - IdentificationType.identificationId
+
+Ref person_profile: Profile.personId > Person.personId
 Ref profile_rol: ProfileRol.profileId > Profile.profileId
 Ref profile_rol: ProfileRol.roleId > Role.roleId
 
@@ -267,8 +240,8 @@ Ref boarding: Boarding.profileId > Profile.profileId
 Ref boarding: Boarding.busId > Bus.busId
 Ref boarding: Boarding.stopId > Stop.stopId
 
-Ref cities: Stop.cityId > City.cityId
-Ref cities: School.cityId > City.cityId
+Ref cities: Stop.cityId > Cities.cityId
+Ref cities: School.cityId > Cities.cityId
 
 Ref route_student_assignments: RouteStudentAssignments.routeId > Route.routeId
 Ref route_student_assignments: RouteStudentAssignments.profileId > Profile.profileId
@@ -306,11 +279,3 @@ Ref view_module: ViewModule.moduleId > Module.moduleId
 
 Ref view_action: ViewAction.viewId > View.viewId
 Ref view_action: ViewAction.actionId > Action.actionId
-
-Ref n: Course.campusId > SchoolCampuse.campusId
-
-Ref identificacionType_person: Person.identificacionTypeId - IdentificationType.identificacionTypeId
-Ref brand_line: Brand.brandId < Line.brandId
-ref bus_model: LineModel.lineModelid < Bus.lineModelId
-ref lineModel_line: Line.lineId < LineModel.lineId
-ref lineModel_line: Model.modelId < LineModel.modelId
