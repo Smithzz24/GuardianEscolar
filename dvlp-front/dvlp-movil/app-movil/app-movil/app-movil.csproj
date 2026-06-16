@@ -65,6 +65,33 @@
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <AndroidResource Remove="Models\**" />
+	  <AndroidResource Remove="Pages\**" />
+	  <AndroidResource Remove="Perfil\**" />
+	  <AndroidResource Remove="ViewModels\**" />
+	  <Compile Remove="Models\**" />
+	  <Compile Remove="Pages\**" />
+	  <Compile Remove="Perfil\**" />
+	  <Compile Remove="ViewModels\**" />
+	  <EmbeddedResource Remove="Models\**" />
+	  <EmbeddedResource Remove="Pages\**" />
+	  <EmbeddedResource Remove="Perfil\**" />
+	  <EmbeddedResource Remove="ViewModels\**" />
+	  <MauiCss Remove="Models\**" />
+	  <MauiCss Remove="Pages\**" />
+	  <MauiCss Remove="Perfil\**" />
+	  <MauiCss Remove="ViewModels\**" />
+	  <MauiXaml Remove="Models\**" />
+	  <MauiXaml Remove="Pages\**" />
+	  <MauiXaml Remove="Perfil\**" />
+	  <MauiXaml Remove="ViewModels\**" />
+	  <None Remove="Models\**" />
+	  <None Remove="Pages\**" />
+	  <None Remove="Perfil\**" />
+	  <None Remove="ViewModels\**" />
+	</ItemGroup>
+
 
 	<!---
 	<ItemGroup>
@@ -84,23 +111,49 @@
 
 	
 	<ItemGroup>
-	  <MauiXaml Update="Pages\Auth\ForgotPassword.xaml">
+	  <MauiXaml Update="Components\Buttons\PrimaryButton.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\Auth\VerifyCode.xaml">
+	  <MauiXaml Update="Components\Cards\RouteInfoCard.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Pages\Welcome.xaml">
+	  <MauiXaml Update="Components\Inputs\CodeInput.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Components\Inputs\InputField.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Components\Layouts\BottomTabBar.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Components\Layouts\HeaderBar.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Features\Auth\Views\ForgotPassword.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Features\Auth\Views\NewPassword.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Features\Auth\Views\VerifyCode.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Features\Auth\Views\Welcome.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Models\" />
-	  <Folder Include="ViewModels\" />
-	  <Folder Include="Pages\Home\" />
-	  <Folder Include="Pages\Config\" />
-	  <Folder Include="Pages\Perfil\" />
+	  <Folder Include="Core\Constants\" />
+	  <Folder Include="Core\Helpers\" />
+	  <Folder Include="Features\Auth\Models\" />
+	  <Folder Include="Features\Auth\ViewModels\" />
+	  <Folder Include="Features\Auth\Services\" />
+	  <Folder Include="Features\Config\" />
+	  <Folder Include="Features\Home\Models\" />
+	  <Folder Include="Features\Home\Views\" />
+	  <Folder Include="Features\Home\ViewModels\" />
+	  <Folder Include="Features\Home\Services\" />
 	</ItemGroup>
 
 	

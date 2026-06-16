@@ -3,7 +3,7 @@
     x:Class="app_movil.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:auth="clr-namespace:app_movil.Pages.Auth"
+    xmlns:auth="clr-namespace:app_movil.Features.Auth.Views"
     Title="app_movil"
     Shell.NavBarIsVisible="False">
 

@@ -6,6 +6,6 @@ public partial class App : Application
     {
         InitializeComponent();
         UserAppTheme = AppTheme.Light;
-        MainPage = new NavigationPage(new Pages.Auth.Welcome());
+        MainPage = new NavigationPage(new Features.Auth.Views.Welcome());
     }
 }
